@@ -12,9 +12,20 @@ def index():
         return render_template("main-all-items.html", entities=entities)
 
 
-@app.route('/paging')
-def paging():
-    return render_template("main.html")
+@app.route('/paging/<int:eid>')
+def paging(eid: int):
+    with open('entities.json') as f:
+        entities = json.load(f)
+        entities_list = []
+        if eid == 1:
+            entities_list = entities[:3]
+        elif eid == 2:
+            entities_list = entities[3:6]
+        elif eid == 3:
+            entities_list = entities[6:]
+
+    return render_template("paging.html", entities=entities_list)
+
 
 
 @app.route('/search')
