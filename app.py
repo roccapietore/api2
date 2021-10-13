@@ -1,5 +1,5 @@
 import json
-
+from os import abort
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -54,6 +54,21 @@ def card(eid: int):
         for ent in entities:
             if ent["id"] == eid:
                 return render_template("card_full.html", entity=ent)
+
+
+@app.route('/card/<int:eid>/<view_form>/')
+@app.route('/card/<int:eid>')
+def card1(eid: int, view_form: str = ''):
+    with open('entities.json') as f:
+        entities = json.load(f)
+        for e in entities:
+            if e["id"] == eid:
+                if view_form == 'short':
+                    return render_template("card_short.html", entity=e)
+                elif not view_form:
+                    return render_template("card_full.html", entity=e)
+                else:
+                    abort(400)
 
 
 if __name__ == '__main__':
