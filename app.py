@@ -27,7 +27,6 @@ def paging(eid: int):
     return render_template("paging.html", entities=entities_list)
 
 
-
 @app.route('/search')
 def search():
     model = request.args.get('model')
@@ -40,6 +39,11 @@ def search():
             for e in entities:
                 if e["model"] == model:
                     response.append(e)
+                else:
+                    new_model = model.split(" ")
+                    for item in new_model:
+                        if item in e["model"]:
+                            response.append(e)
         return render_template("search_ause.html", entities=response)
 
 
